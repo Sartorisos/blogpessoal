@@ -16,40 +16,34 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name="tb_postagens")
-
+@Table(name = "tb_postagens") /*CREATE TABLE tb_postagens*/
 public class Postagem {
-	
-	@Id // indica que este atributo será uma chave primaria na minha tabela
-	@GeneratedValue(strategy = GenerationType.IDENTITY)//indica que terá um auto-increment
+
+	@Id // O Atributo é a Chave Primária
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // Auto Increment
 	private Long id;
 	
-	@NotBlank(message  = "Este atributo é de preenchimento obrigatório")
-	@Size(min = 5 , max = 100 , message = "Este campo tem que possuir no minimo 5 caracteres e no maximo 100 caracteres" )
+	@NotBlank(message = "O Atributo título é Obrigatório!") // Exclusivo para String
+	@Size(min = 5, max = 100, message = "O atributo título deve ter no minimo 05 e no máximo 100 caracteres")
 	private String titulo;
 	
-	@NotBlank(message  = "Este atributo é de preenchimento obrigatório")
-	@Size(min = 10 , max = 1000 , message = "Este campo tem que possuir no minimo 10 caracteres e no maximo 1000 caracteres" )
+	@NotBlank(message = "O Atributo texto é Obrigatório!")
+	@Size(min = 10, max = 1000, message = "O atributo texto deve ter no minimo 10 e no máximo 1000 caracteres")
 	private String texto;
 	
 	@UpdateTimestamp
 	private LocalDateTime data;
-	
-	
-	
-	
-	public Tema getTema() {
-		return tema;
-	}
 
-	public void setTema(Tema tema) {
-		this.tema = tema;
-	}
-
+	/* Relacionamento*/
+	
 	@ManyToOne
 	@JsonIgnoreProperties("postagem")
 	private Tema tema;
-
+	
+	@ManyToOne
+	@JsonIgnoreProperties("postagem")
+	private Usuario usuario;
+	
 	public Long getId() {
 		return id;
 	}
@@ -81,7 +75,23 @@ public class Postagem {
 	public void setData(LocalDateTime data) {
 		this.data = data;
 	}
-	
-	
 
+	/* Criar os Métodos Get e Set do Objeto Tema*/
+	
+	public Tema getTema() {
+		return tema;
+	}
+
+	public void setTema(Tema tema) {
+		this.tema = tema;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+		
 }
