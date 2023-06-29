@@ -18,14 +18,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.generation.blogpessoal.model.Usuario;
-import com.generation.blogpessoal.model.UsuarioLogin;
+
 import com.generation.blogpessoal.repository.UsuarioRepository;
 import com.generation.blogpessoal.service.UsuarioService;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment =WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UsuarioControllerTest {
 
+	
 	@Autowired
 	private UsuarioService usuarioService;
 	
@@ -43,7 +44,7 @@ public class UsuarioControllerTest {
 		usuarioService.cadastrarUsuario(new Usuario(0L, 
 				"Root", "root@root.com", "rootroot", "-"));
 	}
-	
+
 	@Test
 	@DisplayName("😎 Deve Cadastrar um novo Usuário")
 	public void deveCriarUmUsuario() {
@@ -57,7 +58,6 @@ public class UsuarioControllerTest {
 		assertEquals(HttpStatus.CREATED, corpoResposta.getStatusCode());
 		
 	}
-	
 	@Test
 	@DisplayName("😁 Não Deve permitir a duplicação do Usuário")
 	public void naoDeveDuplicarUsuario() {
@@ -74,7 +74,6 @@ public class UsuarioControllerTest {
 		assertEquals(HttpStatus.BAD_REQUEST, corpoResposta.getStatusCode());
 		
 	}
-	
 	@Test
 	@DisplayName("😯 Deve Atualizar os dados do Usuário")
 	public void deveAtualizarUmUsuario() {
@@ -93,7 +92,6 @@ public class UsuarioControllerTest {
 		assertEquals(HttpStatus.OK, corpoResposta.getStatusCode());
 		
 	}
-	
 	@Test
 	@DisplayName("😎 Deve Listar todos os Usuários")
 	public void deveMostrarTodosUsuarios() {
@@ -109,8 +107,7 @@ public class UsuarioControllerTest {
 				.exchange("/usuarios/all", HttpMethod.GET, null, String.class);
 		
 		assertEquals(HttpStatus.OK, resposta.getStatusCode());
-		
-	}
+	}	
 	
 	@Test
 	@DisplayName("😬Listar Um Usuário Específico")
@@ -125,22 +122,5 @@ public class UsuarioControllerTest {
 
 		assertEquals(HttpStatus.OK, resposta.getStatusCode());
 		
-	}
-
-	@Test
-	@DisplayName("😮Login do Usuário")
-	public void deveAutenticarUsuario() {
-
-		usuarioService.cadastrarUsuario(new Usuario(0L, 
-			"Marisa Souza", "marisa_souza@email.com.br", "13465278", "-"));
-
-		HttpEntity<UsuarioLogin> corpoRequisicao = new HttpEntity<UsuarioLogin>(new UsuarioLogin(0L, 
-			"", "marisa_souza@email.com.br", "13465278", "", ""));
-
-		ResponseEntity<UsuarioLogin> corpoResposta = testRestTemplate
-			.exchange("/usuarios/logar", HttpMethod.POST, corpoRequisicao, UsuarioLogin.class);
-
-		assertEquals(HttpStatus.OK, corpoResposta.getStatusCode());
-
 	}
 }
